@@ -1,0 +1,47 @@
+param
+(
+    [Parameter(Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)] 
+    [string]$VBOjob
+)
+
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Ssl3 -bor [System.Net.SecurityProtocolType]::Tls -bor [System.Net.SecurityProtocolType]::Tls11 -bor [System.Net.SecurityProtocolType]::Tls12
+$job = Get-VBOJob -Name $VBOjob
+$sessions = Get-VBOJobSession -Job $job
+$nl = [Environment]::NewLine
+foreach ($session in $sessions){
+    $StartDate = $session.CreationTime
+    $EndDate = $session.EndTime
+    $duration = @{
+        Days = (New-TimeSpan –Start $StartDate –End $EndDate).Days
+        Hours = (New-TimeSpan –Start $StartDate –End $EndDate).Hours
+        Minutes = (New-TimeSpan –Start $StartDate –End $EndDate).Minutes 
+    }
+    $transferred = $session.Statistics.TransferredData
+    if (($duration.Hours -eq 0) -and ($duration.Days -eq 0) ){
+        'JobName: {0}, Created: {1}. Duration: {2} minute(s).' -f 
+        $session.JobName, 
+        $session.CreationTime, 
+        $duration.Minutes 
+        'Transferred: {0}' -f $transferred 
+        $nl
+        }
+    elseif ($duration.Days -eq 0){
+        'JobName: {0}, Created: {1}. Duration: {2} hours and {3} minute(s).' -f 
+        $session.JobName, 
+        $session.CreationTime, 
+        $duration.Hours, 
+        $duration.Minutes
+        'Transferred: {0}' -f $transferred 
+        $nl
+        }
+    else {
+        'JobName: {0}, Created: {1}. Duration: {2} days, {3} hours and {4} minute(s).' -f 
+        $session.JobName, 
+        $session.CreationTime, 
+        $duration.Days, 
+        $duration.Hours, 
+        $duration.Minutes
+        'Transferred: {0}' -f $transferred 
+        $nl
+        }
+}
