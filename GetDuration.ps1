@@ -11,10 +11,11 @@ $nl = [Environment]::NewLine
 foreach ($session in $sessions){
     $StartDate = $session.CreationTime
     $EndDate = $session.EndTime
+    $timespan = New-TimeSpan -Start $StartDate -End $EndDate
     $duration = @{
-        Days = (New-TimeSpan –Start $StartDate –End $EndDate).Days
-        Hours = (New-TimeSpan –Start $StartDate –End $EndDate).Hours
-        Minutes = (New-TimeSpan –Start $StartDate –End $EndDate).Minutes 
+        Days = $timespan.Days
+        Hours = $timespan.Hours
+        Minutes = $timespan.Minutes 
     }
     $transferred = $session.Statistics.TransferredData
     if (($duration.Hours -eq 0) -and ($duration.Days -eq 0) ){
