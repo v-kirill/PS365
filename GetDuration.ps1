@@ -19,12 +19,19 @@ foreach ($session in $sessions){
         Minutes = $timespan.Minutes 
     }
     $transferred = $session.Statistics.TransferredData
+    $errorTitle = $session.Log[1].Title
+    
+    
+    
     if (($duration.Hours -eq 0) -and ($duration.Days -eq 0) ){
         'JobName: {0}, Created: {1}. Duration: {2} minute(s).' -f 
         $session.JobName, 
         $session.CreationTime, 
         $duration.Minutes 
         'Transferred: {0}. Status: {1}' -f $transferred, $status
+        if ($session.Status -eq "Failed"){
+          Write-Host $errorTitle -ForegroundColor Red
+        }
         $nl
         }
     elseif ($duration.Days -eq 0){
@@ -34,6 +41,9 @@ foreach ($session in $sessions){
         $duration.Hours, 
         $duration.Minutes
         'Transferred: {0}. Status: {1}' -f $transferred, $status
+        if ($session.Status -eq "Failed"){
+          Write-Host $errorTitle -ForegroundColor Red
+        }
         $nl
         }
     else {
@@ -44,6 +54,9 @@ foreach ($session in $sessions){
         $duration.Hours, 
         $duration.Minutes
         'Transferred: {0}. Status: {1}' -f $transferred, $status
+        if ($session.Status -eq "Failed"){
+          Write-Host $errorTitle -ForegroundColor Red
+        }
         $nl
         }
 }
