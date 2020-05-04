@@ -11,6 +11,7 @@ $nl = [Environment]::NewLine
 foreach ($session in $sessions){
     $StartDate = $session.CreationTime
     $EndDate = $session.EndTime
+    $status = $session.Status
     $timespan = New-TimeSpan -Start $StartDate -End $EndDate
     $duration = @{
         Days = $timespan.Days
@@ -23,7 +24,7 @@ foreach ($session in $sessions){
         $session.JobName, 
         $session.CreationTime, 
         $duration.Minutes 
-        'Transferred: {0}' -f $transferred 
+        'Transferred: {0}. Status: {1}' -f $transferred, $status
         $nl
         }
     elseif ($duration.Days -eq 0){
@@ -32,7 +33,7 @@ foreach ($session in $sessions){
         $session.CreationTime, 
         $duration.Hours, 
         $duration.Minutes
-        'Transferred: {0}' -f $transferred 
+        'Transferred: {0}. Status: {1}' -f $transferred, $status
         $nl
         }
     else {
@@ -42,7 +43,7 @@ foreach ($session in $sessions){
         $duration.Days, 
         $duration.Hours, 
         $duration.Minutes
-        'Transferred: {0}' -f $transferred 
+        'Transferred: {0}. Status: {1}' -f $transferred, $status
         $nl
         }
 }
