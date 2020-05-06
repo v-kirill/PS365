@@ -30,17 +30,11 @@ foreach($item in $itemColl)
         $versionColl=$item.Versions;  
         $context.Load($versionColl);      
         $context.ExecuteQuery();  
-      
-        #Loop through the versions  
-        foreach($version in $versionColl)  
-        {    
-            #Creating new object to export in .txt file
-            $results += New-Object PSObject -Property @{
-                Path          = $Item["FileRef"]
-                Version       = $version.VersionLabel
+        $results += New-Object PSObject -Property @{
+                VersionCount  = $item.Versions.Count
+                Path          = $Item["FileRef"]          
                 }    
-      
-        }   
+
         Write-Host -ForegroundColor Yellow $item["Title"] "Processed"  
     } 
 $results | Out-File $outputPath
