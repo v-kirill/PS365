@@ -1,10 +1,4 @@
-﻿######### Absolute monitoring values ########## 
-$maxpacketloss = 2 #how much % packetloss until we alert. 
-$MinimumDownloadSpeed = 100 #What is the minimum expected download speed in Mbit/ps
-$MinimumUploadSpeed = 20 #What is the minimum expected upload speed in Mbit/ps
-######### End absolute monitoring values ######
- 
-#Replace the Download URL to where you've uploaded the ZIP file yourself. We will only download this file once. 
+﻿#Replace the Download URL to where you've uploaded the ZIP file yourself. We will only download this file once. 
 #Latest version can be found at: https://www.speedtest.net/nl/apps/cli
 $DownloadURL = "https://bintray.com/ookla/download/download_file?file_path=ookla-speedtest-1.0.0-win64.zip"
 $DownloadLocation = "$($Env:ProgramData)\SpeedtestCLI"
@@ -38,4 +32,4 @@ $SpeedtestResults = $SpeedtestResults | ConvertFrom-Json
     Jitter        = [math]::Round($SpeedtestResults.ping.jitter)
     Latency       = [math]::Round($SpeedtestResults.ping.latency)
 }
-$SpeedtestObj | Out-File C:\Demo\testspeed.txt -Append
+$SpeedtestObj | Out-File C:\Temp\testspeed.txt -Append
